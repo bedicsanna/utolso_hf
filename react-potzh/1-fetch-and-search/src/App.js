@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 const fetchUsers = async () => {
   const response = await fetch(
     "https://randomuser.me/api?results=200&inc=name"
@@ -7,22 +9,37 @@ const fetchUsers = async () => {
 };
 
 export function App() {
-  const users = [
-    { name: { title: "Miss", first: "Laura", last: "Holmes" } },
-    { name: { title: "Mr", first: "James", last: "Bond" } },
-  ];
-  const search = "";
+  const [users, setUsers] = useState([])
+  const [search, setSearch] = useState("");
 
+  const handleInput = (e)=> {
+    setSearch(e.target.value)
+  }
+
+  useEffect(() => {
+    fetchUsers()
+      .then(results => {
+
+        setUsers(results);
+      })
+      .catch(error => {
+        console.error("Error fetching users:", error);
+      });
+  }, []);
+
+  console.log(fetchUsers())
+  if (users === undefined) return <div>Loading...</div>
   return (
     <div>
       <h1>Fetch and search</h1>
-      <input placeholder="Search users" />
+      <input onInput = {handleInput} placeholder="Search users" value={search} autoFocus={true}/>
+
 
       <ul>
-        <li>Mr Győző Horváth</li>
-        <li>Mr Tamás László</li>
-        <li>Mr Imre Bende</li>
-        <li>Mr Barnabás Végh</li>
+      {users.map(e =>
+        (`${e.name.title} ${e.name.first} ${e.name.last}`.includes(search) ? <li key={`${e.name.title} ${e.name.first} ${e.name.last}`}>{`${e.name.title} ${e.name.first} ${e.name.last}`}</li> : "")
+      )}
+
       </ul>
     </div>
   );
