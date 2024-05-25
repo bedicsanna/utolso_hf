@@ -24,21 +24,21 @@ A fegyelmi vétség legsúlyosabb következménye a hallgató elbocsátása az e
 
 # 2. feladat
 
-[ ] a.
-[ ] b.
-[ ] c.
-[ ] d.
-[ ] e.
-[ ] f.
+[x] a.
+[x] b.
+[x] c.
+[x] d.
+[x] e.
+[x] f.
 [ ] g.
 
 # 3. feladat
 
-[ ] a.
-[ ] b.
-[ ] c.
-[ ] d.
-[ ] e.
-[ ] f.
-[ ] g.
-[ ] h.
+[x] a.
+[x] b.
+[x] c.
+[x] d.
+[x] e.
+[x] f.
+[x] g.
+[x] h.

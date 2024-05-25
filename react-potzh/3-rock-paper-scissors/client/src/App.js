@@ -25,20 +25,65 @@ export function App() {
     other: 0,
   });
 
+  const handleJoin = () => {
+    socket.emit("join-game")
+  }
+
+  const handleChange = (e) => {
+    setTip(e.target.value)
+    setDisabled(true)
+    socket.emit("tip", e.target.value)
+  }
+
+  useEffect(() => {
+    socket.on("join-game-response", () => {
+      setJoined(true)
+      setWaiting(true)
+    });
+    socket.on("game-started", () => {
+      setJoined(true)
+      setWaiting(false)
+      setDisabled(false)
+    });
+    socket.on("tip-response", (data) => {
+      setOtherTip(data["lastRound"]["other"])
+      setResult(data["lastRound"]["result"])
+      setOverAll(data["overAll"])
+
+      setTimeout(() => {
+        setDisabled(false)
+        setOtherTip(null)
+        setTip(null)
+      }, 5000);
+    });
+    socket.on("game-over", () => {
+      setJoined(false)
+      setWaiting(false)
+    });
+    socket.on("error", (message) => {
+      setError(message)
+    });
+  }, []);
+
+  if (error !== null){
+    <div>{error}</div>
+    setTimeout(() => {
+      setError(null)
+    }, 6000);
+  }
+
+  if (!joined) return <Button onClick={handleJoin} variant="contained">Join game</Button>
+  else if (joined && waiting) return "Waiting..."
   return (
     <>
-      <Button variant="contained">Join game</Button>
-      {/* -------------- */}
-      Waiting...
-      {/* -------------- */}
-      <Button variant="outlined" color="error">
+      <Button onClick={() => socket.emit("leave-game")} variant="outlined" color="error">
         Leave game
       </Button>
       <Grid container spacing={1}>
         <Grid item xs={12} md={5}>
           <Box>
             <h3>You: {overAll.you}</h3>
-            <ToggleButtonGroup color="primary" value={tip} exclusive>
+            <ToggleButtonGroup value={tip} onChange={handleChange} disabled={disabled} color="primary" exclusive>
               <ToggleButton value="rock">Rock</ToggleButton>
               <ToggleButton value="paper">Paper</ToggleButton>
               <ToggleButton value="scissors">Scissors</ToggleButton>
@@ -48,7 +93,7 @@ export function App() {
         <Grid item xs={12} md={2}>
           <Box>
             <h3>Result</h3>
-            Ide jön az aktuális eredmény
+            {result !== null ? result : ""}
           </Box>
         </Grid>
         <Grid item xs={12} md={5}>

@@ -1,12 +1,14 @@
-export const HistoryComponent = () => {
+import { useSelector } from "react-redux";
 
+export const HistoryComponent = () => {
+	const {currentValue, currentExpression, history, editorMode} = useSelector(state => state.calculator)
     return (
         <div className="history-component">
             <p>Aktuális:</p>
             <table className="current history">
 				<tbody>
 					<tr>
-						<td>5 + 5</td>
+						<td>{currentExpression.join(" ")}</td>
 					</tr>
 				</tbody>
             </table>
@@ -14,12 +16,11 @@ export const HistoryComponent = () => {
             <p>Eddigi számítások:</p>
             <table className="history">
 				<tbody>
-					<tr>
-						<td>5 + 5 = 10</td>
-					</tr>
-					<tr>
-						<td>2 X 3 = 6</td>
-					</tr>
+					{history.map(e => 
+						<tr key={e}>
+							<td>{e}</td>
+						</tr>
+					)}
 				</tbody>
             </table>
         </div>

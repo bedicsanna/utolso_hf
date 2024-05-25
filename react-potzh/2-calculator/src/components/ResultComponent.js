@@ -1,8 +1,10 @@
-export const ResultComponent = () => {
+import { useSelector } from "react-redux";
 
+export const ResultComponent = () => {
+    const {currentValue} = useSelector(state => state.calculator)
     return (
         <div className="result">
-            <p>5</p>
+            <p>{currentValue}</p>
         </div>
     )
 
