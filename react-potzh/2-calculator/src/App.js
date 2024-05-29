@@ -10,29 +10,9 @@ const App = () => {
     const {currentValue, currentExpression, history, editorMode} = useSelector(state => state.calculator)
     const dispatch = useDispatch()
 
-    document.addEventListener('keydown', (event) => {
-        const keyName = event.key;
-        handleClick(event)
-      });
-
     const handleClick = (e)=> {
-        const operators = ["+", "-", "*", "/", "="]
-
-        let value = null
-        if (e.target.name){
-            value = e.target.name
-        }
-        else if (e.key){
-            // console.log(!isNaN(e.key))
-            // console.log(operators.includes(e.key))
-            if (!isNaN(e.key) || operators.includes(e.key)){
-                value = e.key
-            }
-        }
-
+        let value = e.target.name
         if (value) {    
-            console.log(operators.includes(value))
-            console.log(value)
             if (currentValue !== 0 && !isNaN(value) && !editorMode){
                 value = `${currentValue}` + `${value}`
             } 
